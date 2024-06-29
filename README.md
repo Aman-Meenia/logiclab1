@@ -133,6 +133,7 @@ Output Field: string
 Go to directory = logiclab/boilerPlateGenerator/src
 
 npx ts-node generateCode.ts "../../problems/Longest-Palindrome-Substring"
+npx ts-node generateCode.ts "../../problems/{Enter your new added problem folder name}"
 
 By running this command a new folder name as boilerplate is generated which contains boilerplate for the different languages.
 
