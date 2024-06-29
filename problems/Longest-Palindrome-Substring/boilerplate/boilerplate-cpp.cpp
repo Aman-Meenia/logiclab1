@@ -1,4 +1,4 @@
-string longestPalindrome(string s, int n) {
+string longestPalindrome(string s) {
     // Implementation goes here
     
 }

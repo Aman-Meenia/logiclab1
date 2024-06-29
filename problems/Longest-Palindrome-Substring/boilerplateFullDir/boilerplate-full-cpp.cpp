@@ -2,14 +2,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Add the user function here
+
 int  main(){
 
 string s; 
 cin >> s; 
-int n; 
-cin >> n; 
 
-string ans = longestPalindrome(string s,int n);
+string ans = longestPalindrome(s);
 
 cout<<ans<<endl;
 

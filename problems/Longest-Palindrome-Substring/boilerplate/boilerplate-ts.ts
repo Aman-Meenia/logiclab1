@@ -1,4 +1,4 @@
-function longestPalindrome(s: string, n: number) :string {
+function longestPalindrome(s: string) :string {
     // Implementation goes here
     
 }

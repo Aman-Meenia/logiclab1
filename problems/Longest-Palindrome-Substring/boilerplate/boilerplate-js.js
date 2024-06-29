@@ -1,10 +1,10 @@
 /**
- * @param {string s, number n} s, n
+ * @param {string s} s
  * @returns {string}
  */
 
 
-let longestPalindrome = function (s, n) {
+let longestPalindrome = function (s) {
     // Implementation goes here
     
 }
