@@ -22,7 +22,7 @@ export class FullBoilerCodeGenerator {
       if (line.startsWith("Problem Name:")) {
         this.problemName = this.extractQuotedValue(line);
       } else if (line.startsWith("Function Name:")) {
-        console.log("Function Name working :");
+        // console.log("Function Name working :");
         this.functionName = this.extractQuotedValue(line);
       } else if (line.startsWith("Input Structure:")) {
         currentSection = "input";
@@ -40,10 +40,10 @@ export class FullBoilerCodeGenerator {
         }
       }
     });
-    console.log(this.inputFields);
-    console.log(this.outputFields);
-    console.log(this.problemName);
-    console.log("Function name is " + this.functionName);
+    // console.log(this.inputFields);
+    // console.log(this.outputFields);
+    // console.log(this.problemName);
+    // console.log("Function name is " + this.functionName);
   }
   private extractQuotedValue(line: string): string {
     const match = line.match(/: "(.*)"$/);
@@ -199,10 +199,11 @@ cout<<endl;
       let functionCall = "";
       functionCall += this.functionName + "(";
       for (let i = 0; i < inputFields.length; i++) {
-        functionCall += inputFields[i].type;
-        functionCall += " ";
         functionCall += inputFields[i].name;
-        functionCall += ",";
+        functionCall += " ";
+        if (i != inputFields.length - 1) {
+          functionCall += ",";
+        }
       }
       functionCall = functionCall.slice(0, -1);
       functionCall += ");\n";

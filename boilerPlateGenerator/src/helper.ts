@@ -9,17 +9,17 @@ export class ProblemDefinitionParser {
   parse(input: string): void {
     const lines = input.split("\n").map((line) => line.trim());
 
-    console.log(lines);
+    // console.log(lines);
 
     let currentSection: "input" | "output" | null = null;
 
     lines.forEach((line) => {
-      console.log("Line is " + line);
+      // console.log("Line is " + line);
       if (line.startsWith("Problem Name:")) {
         this.problemName = this.extractQuotedValue(line);
       } else if (line.startsWith("Function Name:")) {
-        console.log("Function Name working :");
-        console.log(line);
+        // console.log("Function Name working :");
+        // console.log(line);
         this.functionName = this.extractQuotedValue(line);
       } else if (line.startsWith("Input Structure:")) {
         currentSection = "input";
@@ -37,10 +37,10 @@ export class ProblemDefinitionParser {
         }
       }
     });
-    console.log(this.inputFields);
-    console.log(this.outputFields);
-    console.log(this.problemName);
-    console.log(this.functionName);
+    // console.log(this.inputFields);
+    // console.log(this.outputFields);
+    // console.log(this.problemName);
+    // console.log(this.functionName);
   }
 
   private extractQuotedValue(line: string): string {
@@ -92,8 +92,8 @@ export class ProblemDefinitionParser {
       .map((field) => this.mapType(field.type, lang) + " " + field.name)
       .join(", ");
 
-    console.log("Input params ");
-    console.log(inputParams);
+    // console.log("Input params ");
+    // console.log(inputParams);
 
     const returnType =
       this.outputFields.length > 0

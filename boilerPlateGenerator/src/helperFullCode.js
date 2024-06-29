@@ -19,7 +19,7 @@ var FullBoilerCodeGenerator = /** @class */ (function () {
                 _this.problemName = _this.extractQuotedValue(line);
             }
             else if (line.startsWith("Function Name:")) {
-                console.log("Function Name working :");
+                // console.log("Function Name working :");
                 _this.functionName = _this.extractQuotedValue(line);
             }
             else if (line.startsWith("Input Structure:")) {
@@ -43,10 +43,10 @@ var FullBoilerCodeGenerator = /** @class */ (function () {
                 }
             }
         });
-        console.log(this.inputFields);
-        console.log(this.outputFields);
-        console.log(this.problemName);
-        console.log("Function name is " + this.functionName);
+        // console.log(this.inputFields);
+        // console.log(this.outputFields);
+        // console.log(this.problemName);
+        // console.log("Function name is " + this.functionName);
     };
     FullBoilerCodeGenerator.prototype.extractQuotedValue = function (line) {
         var match = line.match(/: "(.*)"$/);
@@ -160,15 +160,16 @@ var FullBoilerCodeGenerator = /** @class */ (function () {
             var functionCall = "";
             functionCall += this.functionName + "(";
             for (var i = 0; i < inputFields.length; i++) {
-                functionCall += inputFields[i].type;
-                functionCall += " ";
                 functionCall += inputFields[i].name;
-                functionCall += ",";
+                functionCall += " ";
+                if (i != inputFields.length - 1) {
+                    functionCall += ",";
+                }
             }
             functionCall = functionCall.slice(0, -1);
             functionCall += ");\n";
             //TODO: we have the add the user function here
-            return "\n#include <bits/stdc++.h>\nusing namespace std;\n\nint  main(){\n\n".concat(inputCode, "\n").concat(outputFields[0].type, " ans = ").concat(functionCall, "\n").concat(outputCode, "\n\nreturn 0;\n}\n");
+            return "\n#include <bits/stdc++.h>\nusing namespace std;\n\n// Add the user function here\n\nint  main(){\n\n".concat(inputCode, "\n").concat(outputFields[0].type, " ans = ").concat(functionCall, "\n").concat(outputCode, "\n\nreturn 0;\n}\n");
         }
         return "";
     };

@@ -11,16 +11,16 @@ var ProblemDefinitionParser = /** @class */ (function () {
     ProblemDefinitionParser.prototype.parse = function (input) {
         var _this = this;
         var lines = input.split("\n").map(function (line) { return line.trim(); });
-        console.log(lines);
+        // console.log(lines);
         var currentSection = null;
         lines.forEach(function (line) {
-            console.log("Line is " + line);
+            // console.log("Line is " + line);
             if (line.startsWith("Problem Name:")) {
                 _this.problemName = _this.extractQuotedValue(line);
             }
             else if (line.startsWith("Function Name:")) {
-                console.log("Function Name working :");
-                console.log(line);
+                // console.log("Function Name working :");
+                // console.log(line);
                 _this.functionName = _this.extractQuotedValue(line);
             }
             else if (line.startsWith("Input Structure:")) {
@@ -44,10 +44,10 @@ var ProblemDefinitionParser = /** @class */ (function () {
                 }
             }
         });
-        console.log(this.inputFields);
-        console.log(this.outputFields);
-        console.log(this.problemName);
-        console.log(this.functionName);
+        // console.log(this.inputFields);
+        // console.log(this.outputFields);
+        // console.log(this.problemName);
+        // console.log(this.functionName);
     };
     ProblemDefinitionParser.prototype.extractQuotedValue = function (line) {
         var match = line.match(/: "(.*)"$/);
@@ -87,8 +87,8 @@ var ProblemDefinitionParser = /** @class */ (function () {
         var inputParams = this.inputFields
             .map(function (field) { return _this.mapType(field.type, lang) + " " + field.name; })
             .join(", ");
-        console.log("Input params ");
-        console.log(inputParams);
+        // console.log("Input params ");
+        // console.log(inputParams);
         var returnType = this.outputFields.length > 0
             ? this.mapType(this.outputFields[0].type, lang)
             : this.defaultReturnType(lang);

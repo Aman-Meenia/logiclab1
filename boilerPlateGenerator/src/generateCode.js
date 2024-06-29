@@ -6,12 +6,12 @@ var helper_1 = require("./helper");
 var helperFullCode_1 = require("./helperFullCode");
 // Check if folder path is provided as argument
 if (process.argv.length < 3) {
-    console.log("");
+    console.log("Folder path is missing.");
     process.exit(1);
 }
 // Get folder path from command line argument
 var folderPath = process.argv[2];
-console.log("Folder path: " + folderPath);
+// console.log("Folder path: " + folderPath);
 // Validate if folder exists
 if (!fs.existsSync(folderPath)) {
     console.error("Folder \"".concat(folderPath, "\" does not exist."));
@@ -24,7 +24,7 @@ if (!fs.existsSync(structureFilePath)) {
     process.exit(1);
 }
 var input = fs.readFileSync(structureFilePath, "utf-8");
-console.log("Input: " + input);
+// console.log("Input: " + input);
 // Create a directory for boilerplate files if it doesn't exist
 var boilerplateDir = path.join(folderPath, "boilerplate");
 if (!fs.existsSync(boilerplateDir)) {

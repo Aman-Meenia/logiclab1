@@ -29,10 +29,10 @@ var InputSingleVector = function (dataType, dataTypeName, cnt) {
     inputCode += "int size_".concat(cnt, "; \n");
     inputCode += "cin >> size_".concat(cnt, "; \n");
     // EXTRACT VALUE INSIDE THE VECTOR<>
-    var vectorDataType = extractValueForSingleVector(dataType);
-    console.log("vectorDataType is " + vectorDataType);
-    console.log("type is " + typeof dataType);
-    console.log("data is " + dataType);
+    // const vectorDataType = extractValueForSingleVector(dataType);
+    // console.log("vectorDataType is " + vectorDataType);
+    // console.log("type is " + typeof dataType);
+    // console.log("data is " + dataType);
     // DEFINE VECTOR
     inputCode += "".concat(dataType, " ").concat(dataTypeName, "(size_").concat(cnt, "); \n");
     // INPUT VECTOR
@@ -49,11 +49,11 @@ var InputMultipleVector = function (dataType, dataTypeName, cnt) {
     inputCode += "int m_".concat(cnt, "; \n");
     inputCode += "cin >> m_".concat(cnt, "; \n");
     var vectorDataType = extractInnermostValue(dataType);
-    console.log("vectorDataType is " + vectorDataType);
+    // console.log("vectorDataType is " + vectorDataType);
     // DEFINE VECTOR
     inputCode += "".concat(dataType, " ").concat(dataTypeName, " (n_").concat(cnt, ",vector<").concat(vectorDataType, ">(m_").concat(cnt, ")); \n");
     // INPUT VECTOR
-    inputCode += "\n  for(int i = 0; i < n_".concat(cnt, "; i++){\n    for(int j = 0; j < m_").concat(cnt, "; j++){\n      cin >> ").concat(dataTypeName, "[i][j];\n    }\n  } \n");
+    //
     return inputCode;
 };
 exports.InputMultipleVector = InputMultipleVector;
