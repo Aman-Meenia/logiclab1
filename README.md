@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# How to add any new problem
 
-## Getting Started
+## Step 1:
 
-First, run the development server:
+### Generate the problem structure (No need to write the function for every language)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## How to Define the Input and output field
+
+```
+int
+float
+char
+string
+double
+vector<int>
+vector<char>
+vector<bool>
+vector<string>
+vector<long>
+vector<long long>
+vector<float>
+vector<double>
+vector<vector<int>>
+vector<vector<long>>
+vector<vector<long long>>
+vector<vector<char>>
+vector<vector<bool>>
+vector<vector<string>>
+vector<vector<float>>
+vector<vector<double>>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How structure.md should look like
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+Problem Name: "Max Pair Sum"
+Function Name: "maxPairSum"
+Input Structure:
+Input Field: vector<int> arr
+Output Structure:
+Output Field: int
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
 
-## Learn More
+### For multiple input
 
-To learn more about Next.js, take a look at the following resources:
+```
+Just add the new line with inputField
+Problem Name: "Max Pair Sum"
+Function Name: "maxPairSum"
+Input Structure:
+Input Field: int n
+Input Field: vector<vector<int>> temp
+Output Structure:
+Output Field: string
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Step 2:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### How to write the problem description
 
-## Deploy on Vercel
+````
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 1.Maximum pair sum (Write the problem name)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+&nbsp;
+
+#### (write problem description) Given an array of numbers, find the maximum pair sum of the given array.And we can not use the same element twice.
+
+&nbsp;
+
+**Example 1:**
+
+&nbsp;
+
+**Input**
+
+```code2
+[1, 2, 3, 4, 5, 4, 12, 4]
+````
+
+&nbsp;
+
+**Output**
+
+```
+17
+```
+
+&nbsp;
+
+**Example 2:**
+
+&nbsp;
+
+**Input**
+
+```
+[1, 100, 12 ,50, 90, 12]
+```
+
+&nbsp;
+
+**Output**
+
+```
+190
+```
+
+&nbsp;
+
+### Constraints
+
+&nbsp;
+
+- 1 <= n <= 10^5
+
+  &nbsp;
+
+- -10^9 <= A[i] <= 10^9
+
+  &nbsp;
+
+```
+
+```
+
+## After defining the problem structure and problem description now you have to generate the boilerplate and full boilerplate for the problem.
+
+## How to generate boilerplate
+
+```
+Go to directory = logiclab/boilerPlateGenerator/src
+
+npx ts-node generateCode.ts "../../problems/Longest-Palindrome-Substring"
+npx ts-node generateCode.ts "../../problems/{Enter your new added problem folder name}"
+
+By running this command a new folder name as boilerplate is generated which contains boilerplate for the different languages.
+
+```
