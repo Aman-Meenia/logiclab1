@@ -4,12 +4,10 @@ export interface SubmissionType extends Document {
   problemId: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   language: string;
-  languageId: string;
   code: string;
   status: string;
   time: string;
   memory: string;
-  judgeToken: string;
 }
 
 const submissionSchema: mongoose.Schema<SubmissionType> = new mongoose.Schema(
@@ -28,10 +26,6 @@ const submissionSchema: mongoose.Schema<SubmissionType> = new mongoose.Schema(
       type: String,
       required: true,
     },
-    languageId: {
-      type: String,
-      required: true,
-    },
     code: {
       type: String,
       required: true,
@@ -45,10 +39,6 @@ const submissionSchema: mongoose.Schema<SubmissionType> = new mongoose.Schema(
       required: true,
     },
     memory: {
-      type: String,
-      required: true,
-    },
-    judgeToken: {
       type: String,
       required: true,
     },
