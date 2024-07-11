@@ -13,6 +13,7 @@ async function dbConnect(): Promise<void> {
   }
 
   try {
+    // MONGODB_URI
     const db = await mongoose.connect(process.env.MONGODB_URI || "", {
       dbName: "logiclab",
     });

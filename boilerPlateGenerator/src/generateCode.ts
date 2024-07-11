@@ -41,7 +41,7 @@ parser.parse(input);
 
 try {
   const cppCode = parser.generateCpp();
-  fs.writeFileSync(path.join(boilerplateDir, "boilerplate-cpp.cpp"), cppCode);
+  fs.writeFileSync(path.join(boilerplateDir, "boilerplate-cpp.txt"), cppCode);
   console.log("C++ code file generated successfully.");
 } catch (error) {
   console.error("Failed to generate C++ code:", error);
@@ -49,7 +49,7 @@ try {
 
 try {
   const jsCode = parser.generateJs();
-  fs.writeFileSync(path.join(boilerplateDir, "boilerplate-js.js"), jsCode);
+  fs.writeFileSync(path.join(boilerplateDir, "boilerplate-js.txt"), jsCode);
   console.log("JavaScript code file generated successfully.");
 } catch (error) {
   console.error("Failed to generate JavaScript code:", error);
@@ -57,7 +57,7 @@ try {
 
 try {
   const tsCode = parser.generateTs();
-  fs.writeFileSync(path.join(boilerplateDir, "boilerplate-ts.ts"), tsCode);
+  fs.writeFileSync(path.join(boilerplateDir, "boilerplate-ts.txt"), tsCode);
   console.log("TypeScript code file generated successfully.");
 } catch (error) {
   console.error("Failed to generate TypeScript code:", error);
@@ -77,7 +77,7 @@ FullCode.parse(input);
 try {
   const cppFullCode = FullCode.generateCppFull();
   fs.writeFileSync(
-    path.join(boilerplateFullDir, "boilerplate-full-cpp.cpp"),
+    path.join(boilerplateFullDir, "boilerplate-full-cpp.txt"),
     cppFullCode,
   );
   console.log("Full C++ code file generated successfully.");
