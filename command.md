@@ -19,3 +19,39 @@
  docker start <container_name> or docker start <container_id>
 
 ```
+
+## Run using docker compose
+
+```
+
+docker-compose up --build (for building first time)
+docker-compose up
+docker-compose stop
+
+```
+
+## To generate the defaultTest cases for the problem
+
+```
+ts-node generateTestCase.ts  "../../../problems/Longest-Palindrome-Substring"
+```
+
+## To push problem to database (only admin can push the problem to database)
+
+```
+ts-node problem.ts "../../../problems/Longest-Palindrome-Substring" "secret"
+
+```
+
+## Judge0
+
+```
+## Dummy Client
+
+0.0.0.0:2358/dummy-client.html
+
+## languages
+
+0.0.0.0:2358/languages
+
+```

@@ -214,7 +214,7 @@ cout<<endl;
 #include <bits/stdc++.h>
 using namespace std;
 
-// Add the user function here
+// Add user function here
 
 int  main(){
 
