@@ -6,13 +6,16 @@ using namespace std;
 
 int  main(){
 
+int tc= //Enter the exact testcase number ;
+while(tc--){
 string s; 
 cin >> s; 
 
 string ans = longestPalindrome(s);
 
 cout<<ans<<endl;
+cout<<"$$$"<<endl;
 
-
+}
 return 0;
 }
