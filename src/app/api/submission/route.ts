@@ -27,6 +27,7 @@ const submissionTypeValidation = z
     code: z.string().trim().min(1, "code is required"),
     language: z.enum(diffLang),
     problemTitle: z.string(),
+    flag: z.enum(["run", "submit"]),
   })
   .strict();
 type submissionRequestType = z.infer<typeof submissionTypeValidation>;
@@ -65,6 +66,11 @@ export async function POST(request: NextRequest) {
 
     const inputFile = readInputFiles(body.problemTitle);
     const outputFile = readOutputFiles(body.problemTitle);
+    let testCaseSize = inputFile.response.length;
+
+    if (body.flag === "run") {
+      testCaseSize = 3;
+    }
     // console.log("<------------Input And Output  File Start ------------>");
     // console.log(inputFile, outputFile);
     // console.log("<------------Input And Output File End ------------>");
@@ -88,9 +94,6 @@ export async function POST(request: NextRequest) {
       body.language,
       body.code,
     );
-    // console.log("<-------------FULL CODE START ------------------->");
-    // console.log(fullCode.code);
-    // console.log("<-------------FULL CODE END ------------------->");
 
     if (fullCode.success === false) {
       const errorResponse: responseType = {
@@ -101,6 +104,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(errorResponse);
     }
 
+    // Replace the  //Enter the exact testcase number with actual testcase number
+    fullCode.code = fullCode.code.replace(
+      "//Enter the exact testcase number",
+      `${testCaseSize}`,
+    );
+    console.log("<-------------FULL CODE START ------------------->");
+    console.log(fullCode.code);
+    console.log("<-------------FULL CODE END ------------------->");
+
     // Make the judge0 call
     const language_id = languageCode.get(body.language);
     const inputs = inputFile.response;
@@ -109,16 +121,20 @@ export async function POST(request: NextRequest) {
 
     // generate uniqueId
     const uniqueId = uuidv4();
-    console.log(uniqueId);
+    // console.log("unique Id" + uniqueId);
 
     // create uuid_status in readis to store the status of the code
 
-    const testcaseSize = inputs.length;
     const uuid_status = {
       cnt: 1,
-      outputs: Array.from({ length: testcaseSize }, () => false),
-      error: boolean,
-      errorMessage: String,
+      error: false,
+      errorMessage: "",
+      userId: body.userId,
+      problemId: body.problemId,
+      code: body.code,
+      language: body.language,
+      problemTitle: body.problemTitle,
+      flag: body.flag,
     };
 
     await redis.set(
@@ -127,43 +143,51 @@ export async function POST(request: NextRequest) {
       `EX`,
       timeOut,
     );
+    let combineInput = "";
+    // console.log("input length" + inputs.length);
+    // console.log("output length" + outputs.length);
+
+    for (let i = 0; i < testCaseSize; i++) {
+      combineInput = combineInput + inputs[i];
+    }
+
+    let combineOutput = "";
+    for (let i = 0; i < testCaseSize; i++) {
+      combineOutput = combineOutput + outputs[i] + "$$$\n";
+    }
+    // console.log(combineInput);
+    // console.log(combineOutput);
 
     // also store the user code in the redis (because i am not storing the submissions in mongodb intitally store only when the judge0 give ouput for all testcase)
 
     await redis.set(uniqueId + "_code", body.code, `EX`, timeOut);
 
     // send the code to judge0 for all the inputs
-    //TODO: Only one testcase is working at a time for now
-    for (let i = 0; i < 1; i++) {
-      const response = await axios.post(
-        `${process.env.JUDGE_URI}/submissions`,
-        {
-          source_code: fullCode.code,
-          language_id: language_id,
-          stdin: inputs[i],
-          expected_output: outputs[i],
-          callback_url: process.env.CALLBACK_URI,
-        },
-      );
-      // console.log(response.data.token);
-      // save the toke to the redis with the uuid and the cnt of testcase
-      const token = response.data.token;
-      await redis.set(
-        token,
-        JSON.stringify({
-          uuid: uniqueId,
-          index: i,
-        }),
-        `EX`,
-        timeOut,
-      );
-    }
+    const response = await axios.post(`${process.env.JUDGE_URI}/submissions`, {
+      source_code: fullCode.code,
+      language_id: language_id,
+      stdin: combineInput,
+      expected_output: combineOutput,
+      callback_url: process.env.CALLBACK_URI,
+    });
+    // save the toke id with the uuid to know which sumissions output is this
+    const token = response.data.token;
+    await redis.set(
+      token,
+      JSON.stringify({
+        uuid: uniqueId,
+      }),
+      `EX`,
+      timeOut,
+    );
+    // }
 
     const successResponse: responseType = {
       message: "Successfully submitted the code",
       messages: [
         {
           uniqueId: uniqueId,
+          status: "pending",
         },
       ],
       status: 200,
@@ -290,6 +314,7 @@ const readFullBoilerPlate = (
   let code = fs.readFileSync(boilerPlateFilePath, "utf-8");
   code = code.replace("// Add user function here", userCode);
 
+  // console.log("<-------------------CODE------------------->");
   // console.log(code);
   return {
     success: true,
