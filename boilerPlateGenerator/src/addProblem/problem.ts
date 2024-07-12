@@ -42,15 +42,15 @@ if (process.argv.length == 5) {
   if (process.argv[4] === "update") {
     updateProblem = true;
   }
-  console.log("Update problem " + updateProblem);
+  // console.log("Update problem " + updateProblem);
 }
 
 // Folder path
 
 const folderPath = process.argv[2];
 const Title = folderPath.substring(folderPath.lastIndexOf("/") + 1);
-console.log("Title is " + Title);
-console.log("Folder path  " + folderPath);
+// console.log("Title is " + Title);
+// console.log("Folder path  " + folderPath);
 
 const adminSecret = process.argv[3];
 
@@ -137,26 +137,32 @@ lines.forEach((line) => {
 });
 
 // console.log(newProblem);
-// As we have the title of teh problem check if the problem with same title already present if present and update flag is false exit
+// As we have the title of the problem check if the problem with same title already present if present and update flag is false exit
 let problemAlreadyExists = false;
 const problemWithTitleExists = async () => {
   await axios
     .get(`${Domain}/api/problem/${Title}`)
     .then((response) => {
+      // console.log(response.data);
       // console.log(response.data.messages[0].problem);
-      newProblem.problemNumber =
-        response?.data?.messages[0]?.problem?.problemNumber;
 
       if (response.data.success === "true") {
+        newProblem.problemNumber =
+          response?.data?.messages[0]?.problem?.problemNumber;
         // console.log("Problem with same title already exists");
         problemAlreadyExists = true;
       } else {
-        console.log(response.data.message);
-        process.exit(1);
+        // console.log(
+        // "You are trying to update the problem which is not present",
+        // );
+        // console.log(response?.data?.message);
+        // process.exit(1);
       }
     })
-    .catch((err) => {
-      console.log(err.response.message);
+    .catch((error) => {
+      // console.log("Error while adding problem to the database");
+      console.log(error.response.message);
+      // console.log(error?.message);
       process.exit(1);
     });
 };
@@ -180,8 +186,8 @@ if (!fs.existsSync(outputFolderPath)) {
   process.exit(1);
 }
 
-console.log("Input folder path " + inputFolderPath);
-console.log("Output folder path " + outputFolderPath);
+// console.log("Input folder path " + inputFolderPath);
+// console.log("Output folder path " + outputFolderPath);
 
 // Get the boiler plate code and store in db
 
@@ -195,22 +201,22 @@ if (!fs.existsSync(boilerplatePath)) {
   process.exit(1);
 }
 
-const boilerplatePathCpp = path.join(boilerplatePath, "boilerplate-cpp.cpp");
-console.log(boilerplatePathCpp);
+const boilerplatePathCpp = path.join(boilerplatePath, "boilerplate-cpp.txt");
+// console.log(boilerplatePathCpp);
 
 if (!fs.existsSync(boilerplatePathCpp)) {
   console.log(`C++ folder does not exist in  path ${folderPath}`);
   process.exit(1);
 }
 
-const boilerplatePathJs = path.join(boilerplatePath, "boilerplate-js.js");
+const boilerplatePathJs = path.join(boilerplatePath, "boilerplate-js.txt");
 
 if (!fs.existsSync(boilerplatePathJs)) {
   console.log(`JavaScript folder does not exist in  path ${folderPath}`);
   process.exit(1);
 }
 
-const boilerplatePathTs = path.join(boilerplatePath, "boilerplate-ts.ts");
+const boilerplatePathTs = path.join(boilerplatePath, "boilerplate-ts.txt");
 
 if (!fs.existsSync(boilerplatePathTs)) {
   console.log(`TypeScript folder does not exist in  path ${folderPath}`);
@@ -275,13 +281,8 @@ const defaultTC1 = fs.readFileSync(defaultTC1FilePath, "utf-8");
 const defaultTC2 = fs.readFileSync(defaultTC2FilePath, "utf-8");
 const defaultTC3 = fs.readFileSync(defaultTC3FilePath, "utf-8");
 
-// console.log(defaultTC1);
-// console.log(defaultTC2);
-// console.log(defaultTC3);
-
 // As we have Default code , Default testCase description save it in database and return the id
 const defaultCodeAxiosFunction = async () => {
-  // console.log("doamin " + `${Domain}/api/defaultcode`);
   await axios
     .post(`${Domain}/api/defaultcode`, {
       title: Title,
@@ -292,7 +293,6 @@ const defaultCodeAxiosFunction = async () => {
     .then((response) => {
       if (response?.data?.success === "true") {
         console.log("Default code added successfully");
-
         newProblem.defaultCode = response?.data?.messages[0]?._id;
       } else {
         console.log("Error while adding default code to the database");
@@ -343,7 +343,7 @@ const increaseProblemCntAxiosFunction = async () => {
       if (response?.data?.success === "true") {
         console.log(response?.data?.message);
         newProblem.problemNumber = response?.data?.messages[0]?.cnt?.cnt;
-        console.log("Increase cnt " + newProblem.problemNumber);
+        // console.log("Increase cnt " + newProblem.problemNumber);
       } else {
         console.log(response?.data?.message);
         process.exit(1);
@@ -435,7 +435,6 @@ const problemAxiosFunction = async () => {
     });
 };
 
-// console.log("New problem added successfully");
 // Axios function
 
 const addProblemFun = async () => {
@@ -450,13 +449,12 @@ const addProblemFun = async () => {
     );
     process.exit(1);
   }
-
   await defaultCodeAxiosFunction();
   await defaultTestCaseAxiosFunction();
   await problemCntAxiosFunction();
 
   // check if the problem with same problem cnt already present
-  console.log("Problem Already exists " + problemAlreadyExists);
+  // console.log("Problem Already exists " + problemAlreadyExists);
   if (updateProblem === false) {
     await problemExistsAxiosFunction();
 
@@ -468,8 +466,6 @@ const addProblemFun = async () => {
   newProblem.problemTitle = Title;
   // console.log(newProblem);
   await problemAxiosFunction();
-
-  // console.log("Problem added successfully");
 };
 
 addProblemFun();
