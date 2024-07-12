@@ -98,7 +98,6 @@ Output Field: string
 
 ````
 
-# 1.Maximum pair sum (Write the problem name)
 # Maximum pair sum (Write the problem name)
 
 &nbsp;
