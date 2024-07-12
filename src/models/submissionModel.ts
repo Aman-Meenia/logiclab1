@@ -64,6 +64,10 @@ const submissionSchema: mongoose.Schema<SubmissionType> = new mongoose.Schema(
     timestamps: true,
   },
 );
+// Check if the model already exists and delete it
+if (mongoose.models.Submission) {
+  delete mongoose.models.Submission;
+}
 
 const Submission =
   mongoose.models.Submission ||
