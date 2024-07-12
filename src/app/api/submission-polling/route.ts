@@ -4,9 +4,10 @@ import { z } from "zod";
 import { fromZodError } from "zod-validation-error";
 import { responseType } from "@/types/problemType";
 import redis from "@/db/redisConnect";
+// import { ObjectId } from "mongodb";
 import { ObjectId } from "mongodb";
 import { diffLang } from "../../../../boilerPlateGenerator/LanguageCode";
-import { Submission } from "@/models/submissionModel";
+import Submission from "@/models/submissionModel";
 const pollingRequestTypeValidation = z
   .object({
     uniqueId: z.string().min(1, "uniqueId is required"),
@@ -25,11 +26,10 @@ const submissionTypeValidation = z
     }),
     code: z.string().trim().min(1, "code is required"),
     language: z.enum(diffLang),
-    languageId: z.string(),
-    problemTitle: z.string(),
-    status: z.string(),
-    time: z.string(),
-    memory: z.string(),
+    problemTitle: z.string().trim().min(1, "problemTitle is required"),
+    status: z.string().trim().min(1, "status is required"),
+    time: z.string().nullable(),
+    memory: z.number().nullable(),
   })
   .strict();
 
@@ -76,27 +76,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(successResponse);
     }
 
-    // if the cnt is 0 and the error is true then return error
-    // if (parseProblemData.error) {
-    //   const errorResponse: responseType = {
-    //     message: "Error in the problem",
-    //     success: "true",
-    //     status: 200,
-    //     messages: [
-    //       {
-    //         status: "Accepted", //Accepted not mean that testcase are accepted
-    //         error: true,
-    //         errorMessage: parseProblemData.errorMessage,
-    //         time: parseProblemData.time,
-    //         memory: parseProblemData.memory,
-    //       },
-    //     ],
-    //   };
-    //   return NextResponse.json(errorResponse);
-    // }
-    // if cnt is 0 than return the success of the problem
+    // store the submission in database and return the response (store onlywhen user submit the problem)
+    if (parseProblemData.flag === "submit") {
+      parseProblemData.problemId = new ObjectId(parseProblemData.problemId);
+      parseProblemData.userId = new ObjectId(parseProblemData.userId);
+      const dbSubmission: submissionType = {
+        problemId: parseProblemData.problemId, //parseProblemData.problemId,
+        userId: parseProblemData.userId,
+        code: parseProblemData.code,
+        language: parseProblemData.language,
+        problemTitle: parseProblemData.problemTitle,
+        status: parseProblemData.status,
+        time: parseProblemData.time,
+        memory: parseProblemData.memory,
+      };
 
-    // if (parseProblemData.cnt === 0) {
+      // validate the submission
+      const submissionValidation =
+        submissionTypeValidation.safeParse(dbSubmission);
+      if (!submissionValidation.success) {
+        const errorResponse: responseType = {
+          message: fromZodError(submissionValidation.error).message,
+          success: "false",
+          status: 400,
+        };
+        return NextResponse.json(errorResponse);
+      }
+      console.log(dbSubmission);
+
+      await new Submission(dbSubmission).save();
+    }
+
     const successResponse: responseType = {
       message: "Successfully polled the problem",
       success: "true",
@@ -117,9 +127,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(successResponse);
     // }
   } catch (err) {
+    console.log(err);
     const errorResponse: responseType = {
       message: "Internal server error ",
       success: "false",
+      messages: [{ err: err }],
       status: 400,
     };
     return NextResponse.json(errorResponse);
