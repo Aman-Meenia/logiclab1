@@ -9,10 +9,12 @@ const problemTitleSchema = z.object({
   problemTitle: z.string().min(1, { message: "Problem title is required" }),
 });
 
+// api to check if the problem is present or not
 export async function GET(request: NextRequest, context: any) {
   try {
     const {searchParams} = new URL(request.url);
     console.log(searchParams)
+    const { searchParams } = new URL(request.url);
     dbConnect();
     const { params } = context;
     console.log(params);
