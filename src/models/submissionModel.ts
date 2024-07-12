@@ -8,6 +8,8 @@ export interface SubmissionType extends Document {
   status: string;
   time: string;
   memory: string;
+  type?: "contest";
+  contestName?: string;
 }
 
 const submissionSchema: mongoose.Schema<SubmissionType> = new mongoose.Schema(
@@ -16,31 +18,46 @@ const submissionSchema: mongoose.Schema<SubmissionType> = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Problem",
       index: true,
+      required: [true, "Problem id is required"],
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       index: true,
+      required: [true, "User id is required"],
     },
     language: {
       type: String,
-      required: true,
+      trim: true,
+      required: [true, "Language is required"],
     },
     code: {
       type: String,
-      required: true,
+      trim: true,
+      required: [true, "Code is required"],
     },
     status: {
       type: String,
-      required: true,
+      trim: true,
+      required: [true, "Status is required"],
     },
     time: {
       type: String,
-      required: true,
+      trim: true,
+      required: [true, "Time taken is required"],
     },
     memory: {
       type: String,
-      required: true,
+      trim: true,
+      required: [true, "Memory used is required"],
+    },
+    type: {
+      type: String,
+      enum: ["contest"],
+    },
+    contestName: {
+      type: String,
+      trim: true,
     },
   },
   {
