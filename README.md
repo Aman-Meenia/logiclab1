@@ -98,7 +98,7 @@ Output Field: string
 
 ````
 
-# Maximum pair sum (Write the problem name)
+# 1.Maximum pair sum (Write the problem name)
 
 &nbsp;
 
@@ -192,4 +192,26 @@ ts-node problem.ts "../../../problems/Longest-Palindrome-Substring" "secret"
 
 For update
 ts-node problem.ts "../../../problems/Longest-Palindrome-Substring" "secret" "update"
+```
+
+# How to add contest
+
+```
+contestName: "Contest Name"
+description: "Contest Description"
+contestCreator: "Contest Creator"
+startTime: Date (Contest must be of 90 minute)
+endTime: 2024-07-14T16:00:00.000Z
+problem1: "Problem Name" (problemName = "Folder name of the problem")
+problem2: "Problem Name" (problemName = "Folder name of the problem")
+problem3: "Problem Name" (problemName = "Folder name of the problem")
+problem4: "Problem Name" (problemName = "Folder name of the problem")
+```
+
+# How to Add the contest to the database (only admin)
+
+```
+Go to directory = logiclab/boilerPlateGenerator/src/contest
+ts-node generateContest.ts "../../../contests/contest1.txt"
+
 ```
