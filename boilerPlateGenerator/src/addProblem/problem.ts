@@ -435,6 +435,30 @@ const problemAxiosFunction = async () => {
     });
 };
 
+// update problem function
+
+const updateProblemAxiosFunction = async () => {
+  await axios
+    .patch(`${Domain}/api/problem`, {
+      problemNumber: newProblem.problemNumber,
+      type: newProblem.type,
+      difficulty: newProblem.difficulty,
+      description: newProblem.description,
+      problemName: newProblem.problemName,
+      problemTitle: newProblem.problemTitle,
+      defaultTestCase: newProblem.defaultTestCase,
+      defaultCode: newProblem.defaultCode,
+    })
+    .then((response) => {
+      if (response?.data?.success === "true") {
+        console.log(response?.data?.message);
+      } else {
+        console.log(response?.data?.message);
+        process.exit(1);
+      }
+    });
+};
+
 // Axios function
 
 const addProblemFun = async () => {
@@ -462,10 +486,14 @@ const addProblemFun = async () => {
       await increaseProblemCntAxiosFunction();
     }
   }
-
   newProblem.problemTitle = Title;
+
+  if (updateProblem === true) {
+    await updateProblemAxiosFunction();
+  } else {
+    await problemAxiosFunction();
+  }
   // console.log(newProblem);
-  await problemAxiosFunction();
 };
 
 addProblemFun();
