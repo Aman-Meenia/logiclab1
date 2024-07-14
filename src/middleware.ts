@@ -7,7 +7,7 @@ import { getToken } from "next-auth/jwt";
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const url = request.nextUrl;
-  console.log(url.pathname, token, "154522262555");
+  // console.log(url.pathname, token, "154522262555");
 
   if (
     token &&

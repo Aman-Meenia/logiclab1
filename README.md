@@ -30,10 +30,47 @@ vector<vector<float>>
 vector<vector<double>>
 ```
 
+## How to define the vector<type> or vector<vector<type>>
+
+```
+For number | string | bool | char | float | double | long | long long
+
+For number
+10
+
+For string
+aman
+
+For bool
+true | false
+
+For char
+a
+
+n-> size of array
+1 2 3 4 5 6 ... n (no comma or anyspecial character between the numbers or any other datatype)
+
+n-> size of array
+aman meenia aman aman .... upto n
+
+For 2-d array
+n m n-> no of rows m-> no of columns (currently same number of elements is supported)
+
+3 5
+1 2 3 4 5
+6 7 8 9 10
+11 12 13 14 15
+
+
+
+```
+
 ## How structure.md should look like
 
 ```
 Problem Name: "Max Pair Sum"
+Difficulty: "easy"  ["easy" , "medium" , "hard"]
+Type: "regularProblem" ["regularProblem" ,"contest"]
 Function Name: "maxPairSum"
 Input Structure:
 Input Field: vector<int> arr
@@ -137,4 +174,22 @@ npx ts-node generateCode.ts "../../problems/{Enter your new added problem folder
 
 By running this command a new folder name as boilerplate is generated which contains boilerplate for the different languages.
 
+```
+
+## How to generate default testcase.md
+
+```
+Go to directory = logiclab/boilerPlateGenerator/src/defaultTestcase
+ts-node generateTestCase.ts  "../../../problems/Longest-Palindrome-Substring"
+
+```
+
+## To push problem to database (only admin can push the problem to database)
+
+```
+Go to directory = logiclab/boilerPlateGenerator/src/addProblem
+ts-node problem.ts "../../../problems/Longest-Palindrome-Substring" "secret"
+
+For update
+ts-node problem.ts "../../../problems/Longest-Palindrome-Substring" "secret" "update"
 ```

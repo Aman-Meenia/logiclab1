@@ -161,7 +161,7 @@ export class FullBoilerCodeGenerator {
           outputFields[i].type === "long" ||
           outputFields[i].type === "long long"
         ) {
-          outputCode += `cout<<ans<<endl;\n`;
+          outputCode += `cout<<ans<<endl;`;
         } else if (
           outputFields[i].type === "vector<int>" ||
           outputFields[i].type === "vector<float>" ||
@@ -173,7 +173,7 @@ export class FullBoilerCodeGenerator {
           outputFields[i].type === "vector<long long>"
         ) {
           outputCode += `cout<<ans.size()<<endl; \n`;
-          outputCode += `for(int i = 0; i < ans.size(); i++) {cout<<ans[i]<<" ";} cout<<endl; \n`;
+          outputCode += `for(int i = 0; i < ans.size(); i++) {cout<<ans[i]<<" ";} cout<<endl; `;
         } else if (
           outputFields[i].type === "vector<vector<int>>" ||
           outputFields[i].type === "vector<vector<float>>" ||
@@ -214,14 +214,18 @@ cout<<endl;
 #include <bits/stdc++.h>
 using namespace std;
 
-// Add the user function here
+// Add user function here
 
 int  main(){
 
+int tc= //Enter the exact testcase number ;
+while(tc--){
 ${inputCode}
 ${outputFields[0].type} ans = ${functionCall}
 ${outputCode}
+cout<<"$$$"<<endl;
 
+}
 return 0;
 }
 `;
