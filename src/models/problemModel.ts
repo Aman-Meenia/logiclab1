@@ -69,9 +69,8 @@ const problemSchema: mongoose.Schema<ProblemType> = new mongoose.Schema(
   },
 );
 
-// Check if the model already exists and delete it if necessary
+// Check if the model already exists and delete it
 if (mongoose.models.Problem) {
-  console.log("MONGOOSE MODLE DELETE SUCCESSFULLY");
   delete mongoose.models.Problem;
 }
 const Problem =
