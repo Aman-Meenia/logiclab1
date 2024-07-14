@@ -32,7 +32,7 @@ export async function GET(request: NextRequest, context: any) {
       problemTitle: problemTitle,
       type: "regularProblem",
     })
-      .select("-_id problemTitle difficulty description problemName")
+      .select("_id problemTitle difficulty description problemName")
       .populate({
         path: "defaultCode",
         select: "-_id cppCode jsCode tsCode",

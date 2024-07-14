@@ -6,6 +6,7 @@ export interface ContestType extends Document {
   contestCreator: string;
   startTime: Date;
   endTime: Date;
+  status: "upcoming" | "ongoing" | "completed";
   problems: {
     problem1: mongoose.Types.ObjectId;
     problem2: mongoose.Types.ObjectId;
@@ -39,6 +40,11 @@ const contestSchema: Schema<ContestType> = new mongoose.Schema(
     endTime: {
       type: Date,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ["upcoming", "ongoing", "completed"],
+      default: "upcoming",
     },
     problems: {
       problem1: {
