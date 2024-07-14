@@ -1,4 +1,4 @@
-Problem Name:"Number of subarray with sam number of zero and one"
+Problem Name:"Number Of Subarray With Same Number Of Zero And One"
 Difficulty: "medium"
 Type: "contest"
 Function Name: "numOfSubarray"
