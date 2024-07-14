@@ -1,5 +1,5 @@
 import { responseType } from "@/types/problemType";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { z } from "zod";
 import { ObjectId } from "mongodb";
 import { fromZodError } from "zod-validation-error";
@@ -23,7 +23,7 @@ const problemTypeValidation = z
 type problemRequestType = z.infer<typeof problemTypeValidation>;
 
 //TODO: Also check here if the user is admin or not by checking the secret
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     await dbConnect();
     const data: problemRequestType = await request.json();
@@ -71,30 +71,18 @@ export async function POST(request: Request) {
     // Check if the problem is already present in the db than update it
 
     const alreadyExistsProblem = await Problem.findOne({
-      problemTitle: data.problemTitle,
+      $or: [
+        { problemName: data.problemName },
+        { problemTitle: data.problemTitle },
+        { problemNumber: data.problemNumber },
+      ],
     });
 
     if (alreadyExistsProblem) {
-      const updateProblem = await Problem.updateOne(
-        { _id: alreadyExistsProblem._id },
-        {
-          $set: {
-            problemNumber: data.problemNumber,
-            type: data.type,
-            difficulty: data.difficulty,
-            description: data.description,
-            problemName: data.problemName,
-            problemTitle: data.problemTitle,
-            defaultTestCase: data.defaultTestCase,
-            defaultCode: data.defaultCode,
-          },
-        },
-      );
-
       const successResponse: responseType = {
-        message: `Problem ${data.problemName} updated successfully`,
-        status: 200,
-        success: "true",
+        message: `Problem with same name or same title already exists`,
+        status: 400,
+        success: "false",
       };
       return NextResponse.json(successResponse);
     }
@@ -125,7 +113,7 @@ export async function POST(request: Request) {
 
 // <--------------------------------GET Problem in range start to end  ------------------------------------->
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     dbConnect();
     const { searchParams } = new URL(request.url);
@@ -166,5 +154,75 @@ export async function GET(request: Request) {
       success: "false",
     };
     return NextResponse.json(errorResponse);
+  }
+}
+
+// update problem
+
+export async function PATCH(request: NextRequest) {
+  try {
+    // TODO: check that user is a admin or not by checking the secret
+    await dbConnect();
+    const data: problemRequestType = await request.json();
+    console.log(data);
+    // Convert defaultTestCase and defaultCode to ObjectId
+    data.defaultTestCase = new ObjectId(data.defaultTestCase);
+    data.defaultCode = new ObjectId(data.defaultCode);
+
+    const zodResponse = problemTypeValidation.safeParse(data);
+    if (zodResponse.success === false) {
+      console.log(fromZodError(zodResponse?.error).message);
+      const errorResponse: responseType = {
+        message: fromZodError(zodResponse?.error).message,
+        success: "false",
+        status: 400,
+      };
+      return NextResponse.json(errorResponse);
+    }
+
+    // check if the problem already exists or not if not the return error
+
+    const problemExists = await Problem.findOne({
+      problemName: data.problemName,
+    });
+    if (!problemExists) {
+      const errorResponse: responseType = {
+        message: "Problem doesn't exist",
+        success: "false",
+        status: 400,
+      };
+      return NextResponse.json(errorResponse);
+    }
+
+    const updateProblem = await Problem.updateOne(
+      { _id: problemExists._id },
+      {
+        $set: {
+          type: data.type,
+          difficulty: data.difficulty,
+          description: data.description,
+          problemName: data.problemName,
+          problemTitle: data.problemTitle,
+          defaultTestCase: data.defaultTestCase,
+          defaultCode: data.defaultCode,
+        },
+      },
+    );
+
+    const successResponse: responseType = {
+      message: "Problem updated successfully",
+      status: 200,
+      success: "true",
+    };
+    return NextResponse.json(successResponse);
+  } catch (err) {
+    console.log("Error in update problem controller " + err);
+
+    const errResponse: responseType = {
+      message: "Internal server error",
+      status: 500,
+      success: "false",
+    };
+    return NextResponse.json(errResponse);
   }
 }
