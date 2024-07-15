@@ -20,9 +20,22 @@
 
 ```
 
-## Run using docker compose
+## New docker compose commands for running nextjs project
 
 ```
+docker-compose up --build
+
+for mac:
+sudo docker compose up
+
+for windows:
+docker compose up
+
+to enable watch mode(so that you can see the changes in real time):
+enter "w" in the terminal and press enter key.
+## Run using docker compose
+
+
 
 docker-compose up --build (for building first time)
 docker-compose up
