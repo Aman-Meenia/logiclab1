@@ -2,17 +2,22 @@ import mongoose, { Document } from "mongoose";
 
 export interface ProblemType extends Document {
   problemNumber: number;
-  type: "contest " | "regularProblem";
-  difficulty: "easy" | "medium" | "hard";
+  type: "contest" | "regularProblem";
+  difficulty: "easy" | "medium" | "hards";
   description: string;
   problemName: string;
   problemTitle: string; // Folder name of the problem in the problems folder
   defaultTestCase: mongoose.Types.ObjectId;
   defaultCode: mongoose.Types.ObjectId;
+  age: number;
 }
 
 const problemSchema: mongoose.Schema<ProblemType> = new mongoose.Schema(
   {
+    age: {
+      type: Number,
+      // required: [true, "Age is required"],
+    },
     problemNumber: {
       type: Number,
       required: [true, "Problem number is required"],
@@ -21,8 +26,8 @@ const problemSchema: mongoose.Schema<ProblemType> = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["contest ", "regularProblem"],
-      default: "regularProblem",
+      enum: ["contest", "regularProblem"],
+      // default: "regularProblem",
     },
     difficulty: {
       type: String,
@@ -64,6 +69,10 @@ const problemSchema: mongoose.Schema<ProblemType> = new mongoose.Schema(
   },
 );
 
+// Check if the model already exists and delete it
+if (mongoose.models.Problem) {
+  delete mongoose.models.Problem;
+}
 const Problem =
   (mongoose.models.Problem as mongoose.Model<ProblemType>) ||
   mongoose.model<ProblemType>("Problem", problemSchema);

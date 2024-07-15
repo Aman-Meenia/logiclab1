@@ -1,4 +1,4 @@
-# 1. Longest Palindrome Substring
+# Longest Palindrome Substring
 
 &nbsp;
 
