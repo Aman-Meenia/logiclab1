@@ -1,15 +1,3 @@
-// ```
-// contestName: "Contest Name"
-// description: "Contest Description"
-// contestCreator: "Contest Creator"
-// startTime: Date (Contest must be of 90 minute)
-// endTime: Date
-// problem1: "Problem Name" (problemName = "Folder name of the problem")
-// problem2: "Problem Name" (problemName = "Folder name of the problem")
-// problem3: "Problem Name" (problemName = "Folder name of the problem")
-// problem4: "Problem Name" (problemName = "Folder name of the problem")
-// ```
-
 import fs from "fs";
 import axios from "axios";
 import mongoose from "mongoose";
@@ -21,7 +9,7 @@ if (process.argv.length < 3) {
 
 const fileName = process.argv[2];
 
-console.log(fileName);
+// console.log(fileName);
 
 // check if file exists or not
 
@@ -34,7 +22,7 @@ if (!fs.existsSync(fileName)) {
 
 const contestFileContent = fs.readFileSync(fileName, "utf-8");
 
-console.log(contestFileContent);
+// console.log(contestFileContent);
 
 const lines = contestFileContent.split("\n");
 
@@ -66,46 +54,46 @@ for (let i = 0; i < 9; i++) {
   if (line.includes("contestName:")) {
     const contestName = line.split("contestName:")[1].trim();
     contesetDetail.contestName = contestName;
-    console.log(contestName);
+    // console.log(contestName);
   } else if (line.includes("description:")) {
     const description = line.split("description:")[1].trim();
     contesetDetail.description = description;
-    console.log(description);
+    // console.log(description);
   } else if (line.includes("contestCreator:")) {
     const contestCreator = line.split("contestCreator:")[1].trim();
     contesetDetail.contestCreator = contestCreator;
-    console.log(contestCreator);
+    // console.log(contestCreator);
   } else if (line.includes("startTime:")) {
     const startTime = line.split("startTime:")[1].trim();
     contesetDetail.startTime = new Date(startTime);
-    console.log(startTime);
+    // console.log(startTime);
   } else if (line.includes("endTime:")) {
     const endTime = line.split("endTime:")[1].trim();
     contesetDetail.endTime = new Date(endTime);
-    console.log(endTime);
+    // console.log(endTime);
   } else if (line.includes("problem1:")) {
     const problem1 = line.split("problem1:")[1].trim();
     contesetDetail.problem1 = problem1;
-    console.log(problem1);
+    // console.log(problem1);
   } else if (line.includes("problem2:")) {
     const problem2 = line.split("problem2:")[1].trim();
     contesetDetail.problem2 = problem2;
-    console.log(problem2);
+    // console.log(problem2);
   } else if (line.includes("problem3:")) {
     const problem3 = line.split("problem3:")[1].trim();
     contesetDetail.problem3 = problem3;
-    console.log(problem3);
+    // console.log(problem3);
   } else if (line.includes("problem4:")) {
     const problem4 = line.split("problem4:")[1].trim();
     contesetDetail.problem4 = problem4;
-    console.log(problem4);
+    // console.log(problem4);
   } else {
     console.log("Invalid Contest File");
     process.exit(1);
   }
 }
 
-console.log(contesetDetail);
+// console.log(contesetDetail);
 
 // check if any of the field is empty return error
 
@@ -113,7 +101,7 @@ const contesetDetailValidation = Object.values(contesetDetail).every(
   (value) => value !== "",
 );
 
-console.log(contesetDetailValidation);
+// console.log(contesetDetailValidation);
 
 if (!contesetDetailValidation) {
   console.log("Contest Details are not valid");
@@ -124,7 +112,7 @@ if (!contesetDetailValidation) {
 const problemId: string[] = [];
 const Domain = "http://localhost:3000";
 const problemExistsAxiosFunction = async (title: string) => {
-  console.log(title);
+  // console.log("Titile is " + title);
   await axios
     .get(`${Domain}/api/problem/exists?title=${title}`)
     .then((response) => {
@@ -136,7 +124,7 @@ const problemExistsAxiosFunction = async (title: string) => {
       }
     })
     .catch((err) => {
-      console.log(err?.response?.data);
+      console.log(err?.response?.data?.message);
       process.exit(1);
     });
 };
@@ -156,10 +144,8 @@ interface ContestType {
     problem4: mongoose.Types.ObjectId;
   };
 }
-console.log("WOrking 1 ");
 const addContestAxiosRequest = async (constestData: ContestType) => {
-  console.log("Aman Meenia");
-  const response = await axios
+  await axios
     .post(`${Domain}/api/contest`, constestData)
     .then((response) => {
       if (response?.data?.success === "true") {
@@ -178,12 +164,10 @@ const addContestAxiosRequest = async (constestData: ContestType) => {
 // function
 
 const addContestToDatabase = async () => {
-  console.log("Hello Aman aman aman");
   await problemExistsAxiosFunction(contesetDetail.problem1);
   await problemExistsAxiosFunction(contesetDetail.problem2);
   await problemExistsAxiosFunction(contesetDetail.problem3);
   await problemExistsAxiosFunction(contesetDetail.problem4);
-  console.log("Hello Aman Meenia");
   // already check above but typescript is not happy so check it again
   if (!contesetDetail.startTime || !contesetDetail.endTime) {
     console.log("Contest Details are not valid");
