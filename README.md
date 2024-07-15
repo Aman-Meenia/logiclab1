@@ -194,6 +194,13 @@ For update
 ts-node problem.ts "../../../problems/Longest-Palindrome-Substring" "secret" "update"
 ```
 
+# How to convert the "14-09-2024 20:00:00" to "2024-09-14T20:00:00.000Z"
+
+```
+dir = logiclab/boilerPlateGenerator/src/contest
+ ts-node dateGeneration.ts "14-09-2024 20:00:00"
+```
+
 # How to add contest
 
 ```
